@@ -5,76 +5,369 @@ HOST: http://polls.apiblueprint.org/
 
 Polls is a simple API allowing consumers to view polls and vote in them.
 
-## Questions Collection [/questions]
+IMPORTANT: The API URL is set to UAT server in this documentation. Make sure to change the URL to http://app.fxhello.com to communicate with the Production system.
 
-### List All Questions [GET]
+## Authentication [/authenticate]
+
+### Login [POST]
+Allows the user to login using their email address and the password. The API will return a JSON Web Token (JWT) upon successful login. This token needs to be sent in the header of each call of the API.
+
++ Request
+
+    + Headers
+            Accept: application/vnd.fxhello.v1+json
+    + Body
+        {
+            "email": "user@example.com",
+            "password": "Abc@1234"
+        }
+    
++ Response 200 (application/json)
+
+    + Body
+        {
+            "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1",
+            "isError": false
+        }
+
+## Products [/products]
+
+### Get a list of products [POST /products]
+Allows the user to get a list of products. 
+
++ Request
+
+    + Headers
+            Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ
+            Accept: application/vnd.fxhello.v1+json
 
 + Response 200 (application/json)
 
-        [
-            {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
-                    {
-                        "choice": "Swift",
-                        "votes": 2048
-                    }, {
-                        "choice": "Python",
-                        "votes": 1024
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 512
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 256
-                    }
-                ]
-            }
-        ]
-
-### Create a New Question [POST]
-
-You may create your own question using this action. It takes a JSON
-object containing a question and a collection of answers in the
-form of choices.
-
-+ Request (application/json)
-
+    + Body
         {
-            "question": "Favourite programming language?",
-            "choices": [
-                "Swift",
-                "Python",
-                "Objective-C",
-                "Ruby"
+          "payload": [
+                {
+                  "id": "585a1f7b6b0bdc1847488592",
+                  "product_name": "Strawberry Cup cake",
+                  "price": "Rs. 1200",
+                  "sellerCode": "txoxo",
+                  "productCode": "strawberry-cup-cake",
+                  "isUnlimited": true
+                }
             ]
         }
 
-+ Response 201 (application/json)
+### Display product profile [POST /products/product]
+Allows the user to get product details of the selected product. 
+
++ Parameters
+    + id (string) ... Passing the relavent product id to return only the relevant product details.
+    + sellerCode (string) ... Passing the relavent seller code.
+    + productCode (string) ... Passing the relavent product code.
+    + isUnlimited (string) ... Passing the relavent boolean value.
+    
++ Request
 
     + Headers
+            Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ
+            Accept: application/vnd.fxhello.v1+json
+    + Body
+        {
+            "id": 585a2e726b0bdc18704a0f22
+            "sellerCode": txoxo
+            "productCode": fruit-cake
+            "isUnlimited": true
+        }
 
-            Location: /questions/2
++ Response 200 (application/json)
 
     + Body
+        {
+          "payload": {
+            "products": {
+              "id": "585a2e726b0bdc18704a0f22",
+              "product_name": "Fruit cake",
+              "price": "Rs. 120",
+              "description": "best",
+              "sellerCode": "txoxo",
+              "productCode": "fruit-cake",
+              "isUnlimited": true
+            },
+            "stock": "In stock"
+          }
+        }
 
-            {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
-                    {
-                        "choice": "Swift",
-                        "votes": 0
-                    }, {
-                        "choice": "Python",
-                        "votes": 0
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 0
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 0
-                    }
-                ]
-            }
+## Seller [/seller]
+
+### Display seller profile [POST /sellerProfile]
+Allows the user to get seller/user details. 
+    
++ Request
+
+    + Headers
+            Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ
+            Accept: application/vnd.fxhello.v1+json
+
++ Response 200 (application/json)
+
+    + Body
+        {
+          "payload": {
+            "id": 1707,
+            "firstname": "Testxoxo",
+            "lastname": "Seller",
+            "name": "Testxoxo",
+            "mobile": "0775120838",
+            "email": "xoxotestseller@flatorb.com",
+            "country": 129,
+            "state": 0,
+            "govid": null,
+            "passport": null,
+            "type": 100,
+            "status": 2,
+            "meta": null,
+            "settings": null,
+            "password": "$2y$10$HCvPpoJvs3bQaw2j5UeCUOCMJ3mvdkKZjXM1AR/1qwwr24zLc5ezO",
+            "token": null,
+            "remember_token": "tYFs9KExu5c56TBgQ6r963Si8Z0ZaFvjsSVdN9smL8GFymVNJUd7cuHaXrrx",
+            "photo_url": null,
+            "uses_two_factor_auth": 0,
+            "authy_id": null,
+            "country_code": null,
+            "phone": "",
+            "two_factor_reset_code": null,
+            "current_team_id": 1648,
+            "stripe_id": null,
+            "current_billing_plan": null,
+            "card_brand": null,
+            "card_last_four": null,
+            "card_country": null,
+            "billing_address": null,
+            "billing_address_line_2": null,
+            "billing_city": null,
+            "billing_state": null,
+            "billing_zip": null,
+            "billing_country": null,
+            "vat_id": null,
+            "extra_billing_information": null,
+            "trial_ends_at": null,
+            "last_read_announcements_at": null,
+            "created_at": "2016-12-07 08:42:44",
+            "updated_at": "2016-12-16 09:19:19"
+          }
+        }
+
+### Add a new product [POST /seller/productCreate]
+Allows the user to  saves a product. 
+
++ Parameters
+    + name (string) 
+    + description (string)
+    + priceRadioBtn (optional, string)
+    + unitPrice (optional, string)
+    + priceRangeFrom (optional, string)
+    + priceRangeTo (optional, string)
+    + qtyRadioBtn (optional, string)
+    + qty (optional, string)
+
+    + celebration (optional, string) ...Pass the product code only if selected
+    + birthdays (optional, string) ...Pass the product code only if selected
+    + baby-showers (optional, string) ...Pass the product code only if selected
+    + weddings (optional, string) ...Pass the product code only if selected
+    + bridal-showers (optional, string) ...Pass the product code only if selected
+    + anniversaries (optional, string) ...Pass the product code only if selected
+    + house-warming (optional, string) ...Pass the product code only if selected
+    + graduations (optional, string) ...Pass the product code only if selected
+    + corporate (optional, string) ...Pass the product code only if selected
+
+    + food (optional, string) ...Pass the product code only if selected
+    + catering (optional, string) ...Pass the product code only if selected
+    + cakes (optional, string) ...Pass the product code only if selected
+    + cupcakes (optional, string) ...Pass the product code only if selected
+    + dessert (optional, string) ...Pass the product code only if selected
+    + savories (optional, string) ...Pass the product code only if selected
+    + sweet-treats (optional, string) ...Pass the product code only if selected
+
+    + fashion (optional, string) ...Pass the product code only if selected
+    + clothing (optional, string) ...Pass the product code only if selected
+    + shoes (optional, string) ...Pass the product code only if selected
+    + accessories (optional, string) ...Pass the product code only if selected
+    + bags-clutches (optional, string) ...Pass the product code only if selected
+
+    + gifts (optional, string) ...Pass the product code only if selected
+    + toys (optional, string) ...Pass the product code only if selected
+    + crafts (optional, string) ...Pass the product code only if selected
+    + gift-vouchers (optional, string) ...Pass the product code only if selected
+
+    + decorations (optional, string) ...Pass the product code only if selected
+    + stationery (optional, string) ...Pass the product code only if selected
+    + venues (optional, string) ...Pass the product code only if selected
+    + deals (optional, string) ...Pass the product code only if selected
+    + salons (optional, string) ...Pass the product code only if selected
+    
++ Request
+
+    + Headers
+            Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ
+            Accept: application/vnd.fxhello.v1+json
+    + Body
+        {
+            "name": "Test food"
+            "description": "Test"
+            "priceRadioBtn": "True"
+            "unitPrice": "12000"
+            "priceRangeFrom": ""
+            "priceRangeTo": ""
+            "qtyRadioBtn": "False"
+            "qty": "50"
+            "celebration": ""
+            "birthdays": ""
+            "baby-showers": ""
+            "weddings": ""
+            "bridal-showers": ""
+            "anniversaries": ""
+            "house-warming": ""
+            "graduations": ""
+            "corporate": ""
+
+            "food": "food"
+            "catering": "catering"
+            "cakes": "cakes"
+            "cupcakes": ""
+            "dessert": ""
+            "savories": ""
+            "sweet-treats": ""
+
+            "fashion": ""
+            "clothing": ""
+            "shoes": ""
+            "accessories": ""
+            "bags-clutches": ""
+
+            "gifts": ""
+            "toys": ""
+            "crafts": ""
+            "gift-vouchers": ""
+
+            "decorations": ""
+            "stationery": ""
+            "venues": ""
+            "deals": ""
+            "salons": ""
+        
+
+        }
+
++ Response 200 (application/json)
+
+    + Body
+        {
+          "message": "Data saved successfully!!!",
+          "id": "5861e01f6b0bdc09c54ce482",
+          "sellerCode": "txoxo",
+          "productCode": "test-food",
+          "isUnlimited": "False"
+        }
+
+### Get a list of services [POST /seller/services]
+Allows the user to get a list of services. 
+
++ Request
+
+    + Headers
+            Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ
+            Accept: application/vnd.fxhello.v1+json
+
++ Response 200 (application/json)
+
+    + Body
+        {
+          "payload": [
+                {
+                  "_id": {
+                    "oid": "5861e74c6b0bdc09d84fb352"
+                  },
+                  "oid": 1648,
+                  "name": "Test Service",
+                  "category": "{\"fashion\":{\"main\":false,\"fashion-designers\":false},\"entertainment\":{\"main\":\"584a7aa064d40150492aadb4\",\"music-dj\":false,\"face-painters\":\"584a7c0e64d40150492aadbc\",\"magicians\":false,\"dancers\":false},\"more\":{\"main\":false,\"photography\":\"584a380d64d40150492aad93\",\"videography\":\"584a5aee64d40150492aada6\",\"event-planners\":\"584a5b0364d40150492aada7\",\"technology\":false}}",
+                  "description": "Test",
+                  "addresses": "{\"main\":{\"address1\":\"123 Main Street\",\"address2\":\"Unit 8\",\"city\":\"United States\",\"state\":\"\",\"stateid\":\"NY\",\"zip\":\"10601\",\"country\":\"United States\",\"countryid\":\"United States\",\"status\":1,\"cuid\":1707,\"uuid\":1707,\"created_at\":\"2016-12-27 04:00:07\",\"updated_at\":\"2016-12-27 04:00:07\"}}",
+                  "isXoxo": true,
+                  "isService": true,
+                  "distance": 1,
+                  "status": 1,
+                  "cuid": 1707,
+                  "uuid": 1707,
+                  "created_at": "2016-12-27 04:00:07",
+                  "updated_at": "2016-12-27 04:00:07"
+                }
+            ]
+        }
+
+### Create a new service [POST /seller/serviceCreate]
+Allows the user to  saves a service. 
+
++ Parameters
+    + title (string) 
+    + description (string)
+    + distance (string) ...By default distance = 1;
+    + country ( string)
+    + address1 ( string)
+    + address2 (optional, string)
+    + state (optional, string)
+    + zip (optional, string)
+    + city (string)
+
+    + fashion (optional, string) ...Pass the product code only if selected
+    + fashion-designers (optional, string) ...Pass the product code only if selected
+
+    + entertainment (optional, string) ...Pass the product code only if selected
+    + music-dj (optional, string) ...Pass the product code only if selected
+    + face-painters (optional, string) ...Pass the product code only if selected
+    + magicians (optional, string) ...Pass the product code only if selected
+    + dancers (optional, string) ...Pass the product code only if selected
+
+    + more (optional, string) ...Pass the product code only if selected
+    + photography (optional, string) ...Pass the product code only if selected
+    + videography (optional, string) ...Pass the product code only if selected
+    + event-planners (optional, string) ...Pass the product code only if selected
+    + technology (optional, string) ...Pass the product code only if selected
+    
++ Request
+
+    + Headers
+            Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ
+            Accept: application/vnd.fxhello.v1+json
+    + Body
+        {
+            "title": "Test Service"
+            "description": "Test"
+            "distance": "1"
+            "country": "232"
+            "address1": "123 Main Street"
+            "address2": "Unit 8"
+            "state": "NY"
+            "zip": "10601"
+            "city": "New York"
+            "fashion": ""
+            "fashion-designers": ""
+            "entertainment": "entertainment"
+            "music-dj": ""
+            "face-painters": "face-painters"
+            "magicians": ""
+            "graduations": ""
+            "dancers": ""
+            "more": ""
+            "photography": ""
+            "videography": ""
+            "event-planners": ""
+            "technology": ""
+        }
+
++ Response 200 (application/json)
+
+    + Body
+      {
+          "message": "Data saved successfully!!!",
+          "id": "5861e74c6b0bdc09d84fb352"
+      }
