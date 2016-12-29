@@ -97,6 +97,47 @@ Allows the user to get product details of the selected product.
           }
         }
 
+### Display service profile [POST /services/services]
+Allows the user to get service details of the selected service. 
+
++ Parameters
+    + id (string) ... Passing the relavent service id to return only the relevant service details.
+    
++ Request
+
+    + Headers
+            Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ
+            Accept: application/vnd.fxhello.v1+json
+    + Body
+        {
+            "id": 5864cb576b0bdc05815967c2
+        }
+
++ Response 200 (application/json)
+
+    + Body
+        {
+          "payload": {
+            "_id": {
+              "oid": "5864cb576b0bdc05815967c2"
+            },
+            "oid": 1648,
+            "name": "Test Service 1234",
+            "category": "{\"fashion\":{\"main\":false,\"fashion-designers\":false},\"entertainment\":{\"main\":\"584a7aa064d40150492aadb4\",\"music-dj\":false,\"face-painters\":\"584a7c0e64d40150492aadbc\",\"magicians\":false,\"dancers\":false},\"more\":{\"main\":false,\"photography\":\"584a380d64d40150492aad93\",\"videography\":\"584a5aee64d40150492aada6\",\"event-planners\":\"584a5b0364d40150492aada7\",\"technology\":false}}",
+            "description": "Test",
+            "addresses": "{\"main\":{\"address1\":\"123 Main Street\",\"address2\":\"Unit 8\",\"city\":\"United States\",\"state\":\"\",\"stateid\":\"NY\",\"zip\":\"10601\",\"country\":\"United States\",\"countryid\":\"United States\",\"status\":1,\"cuid\":1707,\"uuid\":1707,\"created_at\":\"2016-12-29 08:37:39\",\"updated_at\":\"2016-12-29 08:37:39\"}}",
+            "isXoxo": true,
+            "isService": true,
+            "distance": 1,
+            "status": 1,
+            "cuid": 1707,
+            "uuid": 1707,
+            "created_at": "2016-12-29 08:37:39",
+            "updated_at": "2016-12-29 08:37:39"
+          }
+        }
+
+
 ## Seller [/seller]
 
 ### Display seller profile [POST /sellerProfile]
